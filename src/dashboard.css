@@ -415,9 +415,9 @@
     }
 
     .db-panel {
-        width: 100%;
-        max-width: 360px;
-        max-height: 40vh;
+        width: calc(100% - 24px);
+        max-width: 400px;
+        max-height: 240px;
         border-radius: 20px;
         background: rgba(255, 255, 255, 0.96);
         box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35);
@@ -426,39 +426,67 @@
         overflow: hidden;
     }
 
-    .db-panel--collapsed {
-        max-height: 0 !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        transform: translateY(20px);
-        border: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .db-panel__header {
-        padding: 12px 16px;
-        box-sizing: border-box;
-    }
-
     .db-panel__content {
         padding: 12px;
         box-sizing: border-box;
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow-x: auto !important;
+        overflow-y: auto !important;
+        max-height: 190px;
+        -webkit-overflow-scrolling: touch;
     }
 
-    .db-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 10px !important;
-        width: 100%;
+    .db-grid,
+    .db-grid--presets,
+    .db-grid--env,
+    .db-grid--gems,
+    .db-grid--metal {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        gap: 12px !important;
+        width: 100% !important;
         box-sizing: border-box;
+        padding-bottom: 6px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
     }
 
     .db-thumb {
-        width: 100%;
-        aspect-ratio: 1.3 / 1;
+        flex: 0 0 130px !important;
+        width: 130px !important;
+        height: 95px !important;
+        aspect-ratio: auto !important;
         box-sizing: border-box;
+        scroll-snap-align: start;
+    }
+
+    .db-grid--vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 12px !important;
+    }
+
+    .db-color-section {
+        padding-top: 12px !important;
+    }
+
+    .db-color-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        gap: 10px !important;
+        padding-bottom: 4px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .db-color-dot {
+        flex: 0 0 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+        scroll-snap-align: start;
     }
 
     .fullscreen-btn {
