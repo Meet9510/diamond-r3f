@@ -82,36 +82,6 @@ const CUSTOM_DESIGNS = [
             gemPreset: GEM_PRESETS[0],
             envPreset: ENV_PRESETS[2] // Dark Luxury Drama
         }
-    },
-    {
-        id: 5,
-        image: '/images/ring-design-1.jpg', // Re-using custom Ring design image for high quality representation
-        title: 'The Gemini Nano Band',
-        meta: '18K Rose Gold / Clear Diamonds',
-        desc: 'A futuristic split-band ring custom-tuned for next-generation visual styling, displaying warm rose reflections under high-key commercial lighting.',
-        config: {
-            model: 'ring.glb',
-            metalColor: '#d38b7d', // Rose Gold
-            gemColor: '#ffffff',
-            scenePreset: SCENE_PRESETS[0],
-            gemPreset: GEM_PRESETS[1], // Pure White
-            envPreset: ENV_PRESETS[1] // Soft Commercial
-        }
-    },
-    {
-        id: 6,
-        image: '/images/ring-design-3.jpg', // Re-using custom Ring design image for yellow tones representation
-        title: 'The Banana Cut Solitaire',
-        meta: '18K Platinum / Canary Yellow Diamond',
-        desc: 'A custom marquise solitaire design incorporating a canary yellow diamond setting that sparkles with deep fire, mimicking modern organic jewelry trends.',
-        config: {
-            model: 'ring.glb',
-            metalColor: '#e0e0e0', // Platinum
-            gemColor: '#ddaa00', // Canary Yellow / Citrine
-            scenePreset: SCENE_PRESETS[0],
-            gemPreset: GEM_PRESETS[7], // Citrine Preset
-            envPreset: ENV_PRESETS[5] // Ultra Sparkle
-        }
     }
 ];
 
@@ -176,10 +146,6 @@ export function LandingPage({ isDragging }) {
             {/* Hero Section */}
             <section id="hero" className="landing-hero">
                 <div className="hero-text-content">
-                    <div className="hero-badge">
-                        <span className="badge-dot"></span>
-                        <span className="badge-text">Interactive 3D Showroom</span>
-                    </div>
                     <h1 className="hero-title">
                         Sculpted by <span>Light</span>,<br />
                         Crafted for <span>Eternity</span>
