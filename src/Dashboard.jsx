@@ -17,11 +17,51 @@
 import { useState } from 'react'
 import { GEM_PRESETS, METAL_PRESETS, ENV_PRESETS, SCENE_PRESETS, METAL_COLORS, GEM_COLORS } from './presets.js'
 import './dashboard.css'
+function getCategoryIcon(id) {
+    if (id === 'scenes') {
+        return (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+            </svg>
+        );
+    }
+    if (id === 'gems') {
+        return (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M6 3h12l4 6-10 12L2 9z" />
+                <path d="M11 3 8 9l4 12" />
+                <path d="M13 3l3 6-4 12" />
+                <path d="M2 9h20" />
+            </svg>
+        );
+    }
+    if (id === 'metal') {
+        return (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" />
+            </svg>
+        );
+    }
+    if (id === 'env') {
+        return (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .6 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                <path d="M9 18h6" />
+                <path d="M10 22h4" />
+            </svg>
+        );
+    }
+    return null;
+}
+
 const CATEGORIES = [
-    { id: 'scenes', label: 'Scenes', icon: '🖼️' },
-    { id: 'gems', label: 'Gems', icon: '💎' },
-    { id: 'metal', label: 'Metal', icon: '⚙️' },
-    { id: 'env', label: 'Lighting', icon: '💡' },
+    { id: 'scenes', label: 'Scenes', icon: 'scenes' },
+    { id: 'gems', label: 'Gems', icon: 'gems' },
+    { id: 'metal', label: 'Metal', icon: 'metal' },
+    { id: 'env', label: 'Lighting', icon: 'env' },
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -107,9 +147,25 @@ function EnvThumbnail({ preset, isSelected, onClick }) {
             onClick={() => onClick(preset)}
             title={preset.name}
         >
-            <div className={`db-thumb__env ${isSelected ? 'db-thumb__env--selected' : ''}`}>
-                <span className="db-thumb__env-icon">{preset.icon}</span>
+            <div className="db-thumb__content">
+                <div className={`db-thumb__env ${isSelected ? 'db-thumb__env--selected' : ''}`} style={{
+                    background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c49a45" strokeWidth="2">
+                        <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .6 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                        <path d="M9 18h6" />
+                        <path d="M10 22h4" />
+                    </svg>
+                </div>
             </div>
+            <span className="db-thumb__label">{preset.name}</span>
         </button>
     )
 }
@@ -182,7 +238,7 @@ export function Dashboard({
                             }}
                             title={cat.label}
                         >
-                            <span className="db-tab-v__icon">{cat.icon}</span>
+                            <span className="db-tab-v__icon">{getCategoryIcon(cat.icon)}</span>
                         </button>
                     ))}
                 </div>

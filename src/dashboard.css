@@ -32,6 +32,9 @@
 .app-col-right {
     display: flex;
     z-index: 10;
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .app-col-main {
@@ -49,12 +52,16 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .db-body {
     display: flex;
     gap: 16px;
     height: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 /* ── Vertical Tabs Bar ────────────────────────────────────────────────────── */
@@ -101,10 +108,11 @@
     font-size: 18px;
 }
 
-/* ── Slide-out Panel ──────────────────────────────────────────────────────── */
+
 .db-panel {
     width: 280px;
     height: 100%;
+    max-height: 100%;
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -114,6 +122,7 @@
     flex-direction: column;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
 }
 
 .db-panel--collapsed {
@@ -174,8 +183,8 @@
     width: 100%;
     aspect-ratio: 1;
     border-radius: 14px;
-    border: 2px solid transparent;
-    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.85);
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -226,20 +235,23 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 8px;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
-    color: #fff;
-    font-size: 10px;
+    padding: 8px 4px;
+    background: rgba(15, 23, 42, 0.88); /* Dark slate glass background */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+    font-size: 9px;
     font-weight: 600;
     text-align: center;
-    opacity: 0;
-    transition: opacity 0.3s;
+    opacity: 1; /* Always visible to prevent missing names */
+    transition: all 0.3s;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.db-thumb:hover .db-thumb__label,
-.db-thumb--selected .db-thumb__label {
-    opacity: 1;
+.db-thumb:hover .db-thumb__label {
+    background: #c49a45; /* Gold accent on hover */
 }
 
 /* ── Toast ────────────────────────────────────────────────────────────────── */
@@ -387,4 +399,33 @@
     border-color: #111;
     transform: scale(1.15);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Fullscreen Button ─────────────────── */
+.fullscreen-btn {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.fullscreen-btn:hover {
+    transform: scale(1.1);
+    background: #c49a45;
+    border-color: #ffffff;
+    box-shadow: 0 8px 32px rgba(196, 154, 69, 0.3);
 }

@@ -621,6 +621,18 @@ export default function App() {
     const [customModelUrl, setCustomModelUrl] = useState(null)
     const [isDragging, setIsDragging] = useState(false)
 
+    const mainColRef = useRef(null)
+    const toggleFullScreen = () => {
+        if (!mainColRef.current) return
+        if (!document.fullscreenElement) {
+            mainColRef.current.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`)
+            })
+        } else {
+            document.exitFullscreen()
+        }
+    }
+
     // Global drag-and-drop handler for 3D models (.glb, .gltf)
     useEffect(() => {
         const handleDragOver = (e) => {
@@ -890,7 +902,7 @@ export default function App() {
                         </div>
 
                         {/* ── MAIN CANVAS ── */}
-                        <div className="app-col-main">
+                        <div className="app-col-main" ref={mainColRef}>
                             {toast && (
                                 <div className="db-toast">
                                     {toast}
@@ -999,6 +1011,11 @@ export default function App() {
                                 </Selection>
                             </Canvas>
 
+                            <button className="fullscreen-btn" onClick={toggleFullScreen} title="Toggle Fullscreen">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                                </svg>
+                            </button>
                         </div>
 
                         {/* ── RIGHT INSPECTOR ── */}
