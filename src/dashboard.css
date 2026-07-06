@@ -11,6 +11,7 @@
     background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
     overflow: hidden;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    zoom: 0.9;
 }
 
 .app-grid {

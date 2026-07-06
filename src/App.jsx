@@ -734,7 +734,7 @@ export default function App() {
     // Apply a scene preset 
     const applyScenePreset = useCallback((p) => {
         setDashScenePreset(p)
-        showToast(`🖼️ ${p.name} applied`)
+        showToast(`${p.name} applied`)
     }, [showToast])
 
     // Apply a gem preset — updates Leva diamond illusion values + gem color
@@ -759,7 +759,7 @@ export default function App() {
             ior: p.ior,
             bounces: p.bounces,
         }))
-        showToast(`💎 ${p.name} applied`)
+        showToast(`${p.name} applied`)
     }, [selectedGem, showToast])
 
     // Apply a metal preset — updates Leva metal values + metal color
@@ -776,7 +776,7 @@ export default function App() {
             metalRoughness: p.roughness,
             clearcoat: p.clearcoat,
         })
-        showToast(`⚙️ ${p.name} applied`)
+        showToast(`${p.name} applied`)
     }, [selectedElement, showToast])
 
     // Apply an environment preset
@@ -784,7 +784,7 @@ export default function App() {
         setDashEnvPreset(p)
         const map = (p.type && p.type.startsWith('procedural')) ? 'custom-strip' : p.hdr
         setSceneState(prev => ({ ...prev, hdrMap: map, sceneEnvIntensity: p.intensity || 1.0 }))
-        showToast(`💡 ${p.name} lighting applied`)
+        showToast(`${p.name} lighting applied`)
     }, [setSceneState, showToast])
 
     const captureScreenshot = useCallback(() => {
@@ -794,7 +794,7 @@ export default function App() {
             link.download = 'aurum_studio_render.png'
             link.href = canvas.toDataURL('image/png')
             link.click()
-            showToast('📸 Render exported successfully')
+            showToast('Render exported successfully')
         }
     }, [showToast])
 
@@ -858,7 +858,7 @@ export default function App() {
                         <LoadingScreen onComplete={() => setShowLoader(false)} />
                     )}
                     <TopBar
-                        title="Aurum Studio Configurator"
+                        title="AurumStudio 3D Configurator"
                         autoRotate={sceneState.autoRotate}
                         setAutoRotate={(val) => setSceneState(prev => ({ ...prev, autoRotate: val }))}
                         onReset={() => window.location.reload()}

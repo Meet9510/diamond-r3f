@@ -18,14 +18,9 @@ export function TopBar({ title, autoRotate, setAutoRotate, onReset, onExport }) 
         <div className="top-bar">
             {/* Left: Branding & Title */}
             <div className="top-bar__left">
-                <div className="top-brand">
-                    <div className="top-brand__logo">
-                        <div className="diamond-shape"></div>
-                    </div>
-                    <div className="top-brand__text">
-                        <span className="brand-main">Aurum</span>
-                        <span className="brand-sub">Studio</span>
-                    </div>
+                <div className="top-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <img src="/logo_diamond.png" alt="AurumStudio 3D" style={{ height: '28px', objectFit: 'contain' }} />
+                    <img src="/logo_text.png" alt="AurumStudio 3D Logo" style={{ height: '16px', objectFit: 'contain' }} />
                 </div>
                 <div className="top-divider"></div>
                 <span className="top-bar__title">{title}</span>

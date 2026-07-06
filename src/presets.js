@@ -294,12 +294,12 @@ export const SCENE_PRESETS = [
 ]
 
 export const ENV_PRESETS = [
-    { id: 'contrast-strips', name: 'High Contrast Studio', type: 'procedural', intensity: 1.2, icon: '💎' },
-    { id: 'soft-commercial', name: 'Soft Commercial Softbox', hdr: '/hdri/photo_studio_01_1k.hdr', intensity: 1.0, icon: '📸' },
-    { id: 'dark-drama', name: 'Dark Luxury Drama', hdr: '/hdri/studio019.hdr', intensity: 1.4, icon: '💡' },
-    { id: 'warm-luxury', name: 'Warm Luxury Showroom', hdr: '/hdri/studio024.hdr', intensity: 1.1, icon: '✨' },
-    { id: 'cool-editorial', name: 'Cool Editorial Studio', hdr: '/hdri/studio018.hdr', intensity: 1.0, icon: '🧊' },
-    { id: 'ultra-sparkle', name: 'Ultra Sparkle Studio', type: 'procedural-intense', intensity: 1.5, icon: '⚡' },
+    { id: 'contrast-strips', name: 'High Contrast Studio', type: 'procedural', intensity: 1.2, icon: '' },
+    { id: 'soft-commercial', name: 'Soft Commercial Softbox', hdr: '/hdri/photo_studio_01_1k.hdr', intensity: 1.0, icon: '' },
+    { id: 'dark-drama', name: 'Dark Luxury Drama', hdr: '/hdri/studio019.hdr', intensity: 1.4, icon: '' },
+    { id: 'warm-luxury', name: 'Warm Luxury Showroom', hdr: '/hdri/studio024.hdr', intensity: 1.1, icon: '' },
+    { id: 'cool-editorial', name: 'Cool Editorial Studio', hdr: '/hdri/studio018.hdr', intensity: 1.0, icon: '' },
+    { id: 'ultra-sparkle', name: 'Ultra Sparkle Studio', type: 'procedural-intense', intensity: 1.5, icon: '' },
 ]
 
 export const METAL_COLORS = [

@@ -7,27 +7,57 @@
  * Provides the interactive, modern luxury landing page and the loading screen.
  * 
  * SYSTEM ROLE:
- * Guides the user into the Aurum Studio configuration application. Showcases
+ * Guides the user into the AurumStudio 3D configuration application. Showcases
  * the realistic renders of the Marquise Ring and leverages WebGL raytracing
  * explanations to introduce the technology stack.
  * ============================================================================
  */
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { useProgress } from '@react-three/drei'
 import { GEM_PRESETS, METAL_PRESETS, SCENE_PRESETS, ENV_PRESETS } from './presets.js'
 import './landing.css'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DATA: Custom Designs for Showcase
+// COMPONENT: RotatingGem
+// A lightweight 3D element rendering a rotating glassmorphic gem
+// ─────────────────────────────────────────────────────────────────────────────
+function RotatingGem() {
+    const ref = useRef()
+    useFrame((state, delta) => {
+        if (ref.current) {
+            ref.current.rotation.y += delta * 0.3
+            ref.current.rotation.x += delta * 0.15
+        }
+    })
+    return (
+        <mesh ref={ref} scale={2.4}>
+            <icosahedronGeometry args={[1, 1]} />
+            <meshPhysicalMaterial
+                color="#ffffff"
+                roughness={0.02}
+                metalness={0.0}
+                transmission={1.0}
+                ior={2.42}
+                thickness={2.0}
+                clearcoat={1.0}
+                clearcoatRoughness={0.0}
+            />
+        </mesh>
+    )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA: Custom Designs for Showroom (No Emojis, No Prices)
+// Includes the realistic Gemini Nano Band and Banana Cut Solitaire.
 // ─────────────────────────────────────────────────────────────────────────────
 const CUSTOM_DESIGNS = [
     {
         id: 1,
         image: '/images/ring-design-1.jpg',
         title: 'The Marquise Solitaire Crown',
-        meta: '18K White Gold & Diamond',
+        meta: '18K White Gold / Marquise Cut Diamond',
         desc: 'An architectural crown design featuring multi-cluster Marquise cut diamonds mounted on a high-polish White Gold band, showcasing maximum dispersion and light refraction.',
-        price: '$12,400',
         config: {
             model: 'ring.glb',
             metalColor: '#c8c8c8', // White Gold
@@ -41,9 +71,8 @@ const CUSTOM_DESIGNS = [
         id: 2,
         image: '/images/ring-design-2.jpg',
         title: 'Royal Marquise Cluster',
-        meta: '18K Platinum & Premium Diamonds',
+        meta: '18K Platinum / Premium Diamonds',
         desc: 'An alternative overhead angle highlighting the intricate crown structure and facet layouts designed to capture specular reflection maps in real-time.',
-        price: '$14,900',
         config: {
             model: 'ring.glb',
             metalColor: '#e0e0e0', // Platinum
@@ -57,9 +86,8 @@ const CUSTOM_DESIGNS = [
         id: 3,
         image: '/images/ring-design-3.jpg',
         title: 'Enchanted Rose & Peridot Band',
-        meta: '18K Yellow Gold, Rose Quartz & Peridot',
+        meta: '18K Yellow Gold / Rose Quartz & Peridot',
         desc: 'A nature-inspired masterpiece featuring custom pink tourmaline (rose quartz) petals paired with light green peridot accents, styled on a warm yellow gold setting.',
-        price: '$8,800',
         config: {
             model: 'ring.glb',
             metalColor: '#ffcc00', // Yellow Gold
@@ -73,9 +101,8 @@ const CUSTOM_DESIGNS = [
         id: 4,
         image: '/images/ring-design-4.jpg',
         title: 'The Marquise Split-Shank Crown',
-        meta: '18K Platinum & Diamond',
+        meta: '18K Platinum / Premium Diamonds',
         desc: 'A split-shank design featuring an elevated pave band leading up to the iconic marquise fan crown, exhibiting high-fidelity refraction and dispersion.',
-        price: '$13,500',
         config: {
             model: 'ring.glb',
             metalColor: '#e0e0e0', // Platinum
@@ -83,6 +110,36 @@ const CUSTOM_DESIGNS = [
             scenePreset: SCENE_PRESETS[0],
             gemPreset: GEM_PRESETS[0],
             envPreset: ENV_PRESETS[2] // Dark Luxury Drama
+        }
+    },
+    {
+        id: 5,
+        image: '/images/ring-design-1.jpg', // Re-using custom Ring design image for high quality representation
+        title: 'The Gemini Nano Band',
+        meta: '18K Rose Gold / Clear Diamonds',
+        desc: 'A futuristic split-band ring custom-tuned for next-generation visual styling, displaying warm rose reflections under high-key commercial lighting.',
+        config: {
+            model: 'ring.glb',
+            metalColor: '#d38b7d', // Rose Gold
+            gemColor: '#ffffff',
+            scenePreset: SCENE_PRESETS[0],
+            gemPreset: GEM_PRESETS[1], // Pure White
+            envPreset: ENV_PRESETS[1] // Soft Commercial
+        }
+    },
+    {
+        id: 6,
+        image: '/images/ring-design-3.jpg', // Re-using custom Ring design image for yellow tones representation
+        title: 'The Banana Cut Solitaire',
+        meta: '18K Platinum / Canary Yellow Diamond',
+        desc: 'A custom marquise solitaire design incorporating a canary yellow diamond setting that sparkles with deep fire, mimicking modern organic jewelry trends.',
+        config: {
+            model: 'ring.glb',
+            metalColor: '#e0e0e0', // Platinum
+            gemColor: '#ddaa00', // Canary Yellow / Citrine
+            scenePreset: SCENE_PRESETS[0],
+            gemPreset: GEM_PRESETS[7], // Citrine Preset
+            envPreset: ENV_PRESETS[5] // Ultra Sparkle
         }
     }
 ];
@@ -127,11 +184,11 @@ export function LandingPage({ isDragging }) {
             <div className="ripple ripple-4"></div>
             <div className="ripple ripple-5"></div>
 
-            {/* Glassmorphic Navigation Header */}
+            {/* Glassmorphic Navigation Header with brand logos */}
             <header className="landing-header">
-                <a href="#" className="brand-logo">
-                    <span className="logo-text">AURUM</span>
-                    <span className="logo-tag">STUDIO</span>
+                <a href="#" className="brand-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <img src="/logo_diamond.png" alt="AurumStudio 3D Icon" style={{ height: '32px', objectFit: 'contain' }} />
+                    <img src="/logo_text.png" alt="AurumStudio 3D Text" style={{ height: '18px', objectFit: 'contain' }} />
                 </a>
                 <nav className="nav-links">
                     <a href="#hero" className="nav-link">Home</a>
@@ -156,7 +213,7 @@ export function LandingPage({ isDragging }) {
                         Crafted for <span>Eternity</span>
                     </h1>
                     <p className="hero-description">
-                        Welcome to Aurum Studio. Experience the future of fine jewelry design through our physically accurate, real-time 3D customizer. Configure premium metals and gemstones cut with mathematical precision, rendering at 60fps directly in your browser.
+                        Welcome to AurumStudio 3D. Experience the future of fine jewelry design through our physically accurate, real-time 3D customizer. Configure premium metals and gemstones cut with mathematical precision, rendering at 60fps directly in your browser.
                     </p>
                     <div className="hero-actions">
                         <button className="hero-btn-primary" onClick={() => openConfigurator(activeDesign.config)}>
@@ -176,8 +233,21 @@ export function LandingPage({ isDragging }) {
                     </div>
                 </div>
 
-                {/* Hero Showcase (Interactive Card) */}
+                {/* Hero Showcase: 3D rotating canvas element on top, static image switcher on hover */}
                 <div className="hero-image-showcase">
+                    {/* 3D Canvas element */}
+                    <div className="hero-3d-card">
+                        <Canvas camera={{ position: [0, 0, 5], fov: 40 }} style={{ width: '100%', height: '100%' }}>
+                            <ambientLight intensity={1.5} />
+                            <pointLight position={[10, 10, 10]} intensity={3} />
+                            <pointLight position={[-10, -10, -10]} intensity={1} />
+                            <RotatingGem />
+                        </Canvas>
+                        <div className="hero-3d-label">
+                            <span>Interactive 3D Preview</span>
+                        </div>
+                    </div>
+
                     {/* Floating thumbnails */}
                     <div className="showcase-thumbnails">
                         {CUSTOM_DESIGNS.map((item, idx) => (
@@ -191,12 +261,7 @@ export function LandingPage({ isDragging }) {
                         ))}
                     </div>
 
-                    <img 
-                        src={activeDesign.image} 
-                        alt={activeDesign.title} 
-                        className="showcase-bg-image"
-                    />
-                    <div className="showcase-overlay">
+                    <div className="showcase-overlay" style={{ background: 'linear-gradient(to top, rgba(6, 9, 19, 0.95) 0%, rgba(6, 9, 19, 0.1) 100%)' }}>
                         <span className="showcase-tag">{activeDesign.meta}</span>
                         <h2 className="showcase-title">{activeDesign.title}</h2>
                         <p className="showcase-description">{activeDesign.desc}</p>
@@ -215,7 +280,7 @@ export function LandingPage({ isDragging }) {
                 </div>
             </section>
 
-            {/* Showroom / Collection Grid Section */}
+            {/* Showroom / Collection Grid Section (No prices, No emojis) */}
             <section id="showroom" className="landing-showroom-sec">
                 <div className="section-header">
                     <span className="section-subtitle">Exquisite Renders</span>
@@ -231,8 +296,7 @@ export function LandingPage({ isDragging }) {
                                 <span className="card-meta">{design.meta}</span>
                                 <h3 className="card-title">{design.title}</h3>
                                 <p className="card-text">{design.desc}</p>
-                                <div className="card-actions">
-                                    <span className="card-price">{design.price}</span>
+                                <div className="card-actions" style={{ justifyContent: 'flex-end' }}>
                                     <button className="card-btn" onClick={() => openConfigurator(design.config)}>
                                         Customize in 3D
                                     </button>
@@ -243,7 +307,7 @@ export function LandingPage({ isDragging }) {
                 </div>
             </section>
 
-            {/* Technology Info Section */}
+            {/* Technology Info Section (No emojis) */}
             <section id="technology" className="landing-tech-sec">
                 <div className="section-header">
                     <span className="section-subtitle">Core Innovation</span>
@@ -251,29 +315,30 @@ export function LandingPage({ isDragging }) {
                 </div>
                 <div className="tech-grid">
                     <div className="tech-card">
-                        <div className="tech-icon">🌐</div>
+                        <div className="tech-title" style={{ fontSize: '15px', color: '#c49a45', letterSpacing: '0.05em', marginBottom: '8px' }}>BVH ACCELERATION</div>
                         <h3 className="tech-title">Bounding Volume Hierarchy</h3>
                         <p className="tech-desc">
                             We compile a custom bounding volume hierarchy tree directly over the gemstone geometry. This accelerates ray intersection testing to O(log N), allowing real-time raytracing path lookups in standard web browsers.
                         </p>
                     </div>
                     <div className="tech-card">
-                        <div className="tech-icon">💎</div>
+                        <div className="tech-title" style={{ fontSize: '15px', color: '#c49a45', letterSpacing: '0.05em', marginBottom: '8px' }}>OPTICAL PHYSICS</div>
                         <h3 className="tech-title">Total Internal Reflection</h3>
                         <p className="tech-desc">
                             Light rays entering the gemstone are bent according to the Index of Refraction (Snell's Law) and bounce internally off the facets up to 10 times until escaping to sample the studio environment maps.
                         </p>
                     </div>
                     <div className="tech-card">
-                        <div className="tech-icon">🌈</div>
+                        <div className="tech-icon" style={{ display: 'none' }}></div>
+                        <div className="tech-title" style={{ fontSize: '15px', color: '#c49a45', letterSpacing: '0.05em', marginBottom: '8px' }}>LIGHT DISPERSION</div>
                         <h3 className="tech-title">Chromatic Dispersion</h3>
                         <p className="tech-desc">
                             By tracing red, green, and blue light waves at slightly different Indices of Refraction, we simulate real gemstone fire, creating beautiful rainbow-like spectral highlights as you rotate the ring.
                         </p>
                     </div>
                     <div className="tech-card">
-                        <div className="tech-icon">✨</div>
-                        <h3 className="tech-title">Dual-Pass Reflections</h3>
+                        <div className="tech-title" style={{ fontSize: '15px', color: '#c49a45', letterSpacing: '0.05em', marginBottom: '8px' }}>DUAL-PASS SHADER</div>
+                        <h3 className="tech-title">Specular Highlights</h3>
                         <p className="tech-desc">
                             A dual-pass shader model isolates direct top-surface reflections from internal volume bounces. This preserves sharp mirror reflections on flat tables while maintaining deep refraction in the pavilion.
                         </p>
@@ -284,30 +349,29 @@ export function LandingPage({ isDragging }) {
             {/* Interactive File Drag/Drop Zone */}
             <section id="drag-drop" className="landing-upload-sec">
                 <div className="upload-zone-wrap" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
-                    <div className="upload-icon">💍</div>
-                    <h3 className="upload-headline">Have Your Own Design?</h3>
+                    <h3 className="upload-headline">Custom Design Upload</h3>
                     <p className="upload-subtext">
                         Drag and drop a 3D model (.glb or .gltf) here, or click to launch the default scene with our custom Marquise ring model.
                     </p>
                     <div className="sample-pills">
-                        <span className="sample-pill">💎 Try Default Ring</span>
-                        <span className="sample-pill">📁 Drop Custom GLB</span>
+                        <span className="sample-pill">Try Default Ring</span>
+                        <span className="sample-pill">Drop Custom GLB</span>
                     </div>
                 </div>
             </section>
 
-            {/* Footer */}
+            {/* Footer with branding logos */}
             <footer className="landing-footer">
                 <div className="footer-content">
-                    <div className="footer-logo">
-                        <span className="footer-logo-brand">AURUM</span>
-                        <span className="footer-logo-studio">STUDIO</span>
+                    <div className="footer-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <img src="/logo_diamond.png" alt="AurumStudio 3D Icon" style={{ height: '28px', objectFit: 'contain' }} />
+                        <img src="/logo_text.png" alt="AurumStudio 3D Logo" style={{ height: '16px', objectFit: 'contain' }} />
                     </div>
                     <div className="footer-credentials">
                         Developed & Powered by Kakadiya Graphics & Technologies
                     </div>
                     <div className="footer-copyright">
-                        © 2026 Aurum Studio. All rights reserved.
+                        © 2026 AurumStudio 3D. All rights reserved.
                     </div>
                 </div>
             </footer>
@@ -334,11 +398,12 @@ export function LoadingScreen({ onComplete }) {
     return (
         <div className="loading-wrap">
             <div className="loading-center">
-                <h1 className="loading-title">
-                    AURUM<span>STUDIO</span>
-                </h1>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                    <img src="/logo_diamond.png" alt="AurumStudio 3D Icon" style={{ height: '54px', objectFit: 'contain' }} />
+                    <img src="/logo_text.png" alt="AurumStudio 3D Text" style={{ height: '24px', objectFit: 'contain' }} />
+                </div>
                 <div className="loading-spinner"></div>
-                <div className="loading-text">Calibrating Optics</div>
+                <div className="loading-text" style={{ letterSpacing: '0.1em' }}>Calibrating Optics</div>
                 <div className="loading-progress">{Math.round(progress)}%</div>
             </div>
         </div>
