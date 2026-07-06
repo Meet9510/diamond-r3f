@@ -1599,6 +1599,35 @@
     .hero-drag-box {
         margin: 24px auto 0;
     }
+
+    .showcase-thumbnails {
+        top: 12px;
+        right: 12px;
+        gap: 6px;
+        padding: 4px;
+    }
+
+    .thumb-btn {
+        width: 38px;
+        height: 28px;
+    }
+
+    .showcase-overlay {
+        padding: 20px;
+        background: linear-gradient(to top, rgba(6, 9, 19, 0.98) 0%, rgba(6, 9, 19, 0.7) 65%, transparent 100%);
+    }
+
+    .showcase-title {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+
+    .showcase-description {
+        font-size: 12px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+        max-width: 100%;
+    }
 }
 
 /* Mobile Breakpoint (< 600px) */
@@ -1617,6 +1646,27 @@
 
     .hero-description {
         font-size: 14px;
+    }
+
+    .showcase-thumbnails {
+        top: 8px;
+        right: 8px;
+        gap: 4px;
+        padding: 3px;
+    }
+
+    .thumb-btn {
+        width: 32px;
+        height: 24px;
+    }
+
+    .showcase-title {
+        font-size: 18px;
+    }
+
+    .showcase-description {
+        font-size: 11px;
+        margin-bottom: 8px;
     }
 
     .stats-strip {

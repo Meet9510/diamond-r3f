@@ -311,6 +311,12 @@
 }
 
 @media (max-width: 1024px) {
+    .app-layout {
+        width: 100vw;
+        height: 100vh;
+        transform: none;
+    }
+
     .app-grid {
         grid-template-columns: auto 1fr;
     }
@@ -330,20 +336,89 @@
 }
 
 @media (max-width: 768px) {
+    .app-layout {
+        width: 100vw;
+        height: 100vh;
+        transform: none;
+    }
+
     .app-grid {
         grid-template-columns: 1fr;
         padding: 8px;
+        height: calc(100vh - 56px);
+        gap: 8px;
     }
 
     .app-col-left {
         position: fixed;
-        bottom: 24px;
-        left: 50%;
-        transform: translateX(-50%);
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
         width: auto;
         height: auto;
+        z-index: 500;
+        max-height: calc(100vh - 80px);
+        pointer-events: none;
     }
 
+    .dashboard {
+        width: 100%;
+        pointer-events: auto;
+    }
+
+    .db-body {
+        flex-direction: column-reverse;
+        width: 100%;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .db-tabs-vertical {
+        width: 100%;
+        max-width: 360px;
+        height: 56px;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0 16px;
+        border-radius: 28px;
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .db-tab-v {
+        color: #94a3b8;
+    }
+
+    .db-tab-v--active {
+        background: #c49a45;
+        color: #060913;
+    }
+
+    .db-panel {
+        width: 100%;
+        max-width: 360px;
+        max-height: 45vh;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .db-panel--collapsed {
+        max-height: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(20px);
+        border: none;
+    }
+
+    .db-panel__header {
+        padding: 12px 16px;
+    }
+
+    .db-panel__content {
+        padding: 12px 16px;
+    }
 }
 
 /* ── Integrated Color Panel ──────────────────────────────────────────────── */

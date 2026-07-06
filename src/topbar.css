@@ -160,3 +160,34 @@
     padding: 0;
     justify-content: center;
 }
+
+/* ── Mobile Breakpoint (< 768px) ── */
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 8px 12px;
+        height: 56px;
+    }
+
+    .top-bar__title,
+    .top-divider {
+        display: none;
+    }
+
+    .brand-sub {
+        display: none;
+    }
+
+    .brand-main {
+        font-size: 18px;
+    }
+
+    .nav-btn__label {
+        display: none;
+    }
+
+    .nav-btn {
+        padding: 0 10px;
+        height: 34px;
+        gap: 0;
+    }
+}
