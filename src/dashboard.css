@@ -1,0 +1,388 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   dashboard.css — iJewel-style Premium Responsiveness & Layout
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Root Layout Architecture (3-Zone Grid) ─────────────────────────────── */
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
+    overflow: hidden;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.app-grid {
+    flex: 1;
+    display: grid;
+    /* Left Toolbar, Main Canvas, Right Inspector */
+    grid-template-columns: auto 1fr auto;
+    width: 100%;
+    height: calc(100vh - 64px);
+    padding: 24px;
+    gap: 32px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.app-col-left,
+.app-col-right {
+    display: flex;
+    z-index: 10;
+}
+
+.app-col-main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* ── Dashboard (Left Toolbar Wrapper) ─────────────────────────────────────── */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.db-body {
+    display: flex;
+    gap: 16px;
+    height: 100%;
+}
+
+/* ── Vertical Tabs Bar ────────────────────────────────────────────────────── */
+.db-tabs-vertical {
+    width: 64px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.db-tab-v {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    transition: all 0.25s ease;
+}
+
+.db-tab-v:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.db-tab-v--active {
+    background: #111;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.db-tab-v__icon {
+    font-size: 18px;
+}
+
+/* ── Slide-out Panel ──────────────────────────────────────────────────────── */
+.db-panel {
+    width: 280px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.db-panel--collapsed {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-20px);
+}
+
+.db-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.db-panel__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.db-panel__close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ccc;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.db-panel__close:hover {
+    color: #111;
+}
+
+.db-panel__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+/* ── Thumbnails ───────────────────────────────────────────────────────────── */
+.db-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.db-grid--gems,
+.db-grid--metal {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.db-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    padding: 0;
+}
+
+.db-thumb:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.db-thumb--selected {
+    border-color: #d4af37;
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+}
+
+.db-thumb__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Specific Thumbnail Types */
+.db-thumb__scene {
+    width: 100%;
+    height: 100%;
+}
+
+.db-thumb__gem {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.db-thumb__metal {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.db-thumb__label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-transform: uppercase;
+}
+
+.db-thumb:hover .db-thumb__label,
+.db-thumb--selected .db-thumb__label {
+    opacity: 1;
+}
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+.db-toast {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 2000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: none;
+    animation: toast-anim 2s ease forwards;
+}
+
+@keyframes toast-anim {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+    85% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+}
+
+/* ── Responsive Breakpoints ─────────────────────────────────────────────── */
+
+@media (max-width: 1200px) {
+    .app-grid {
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .right-panel {
+        width: 300px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .app-grid {
+        grid-template-columns: auto 1fr;
+    }
+
+    .app-col-right {
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+    }
+
+    .app-col-right.active {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .app-grid {
+        grid-template-columns: 1fr;
+        padding: 8px;
+    }
+
+    .app-col-left {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        height: auto;
+    }
+
+}
+
+/* ── Integrated Color Panel ──────────────────────────────────────────────── */
+.db-grid--vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.db-grid--presets {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.db-color-section {
+    padding-top: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.db-section-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.db-color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.db-color-dot {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.db-color-dot:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.db-color-dot.active {
+    border-color: #111;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

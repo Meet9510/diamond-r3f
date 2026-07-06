@@ -1,0 +1,14 @@
+## Designed for Luxury
+We are a team of designers, engineers and photographers who are obsessed with quality and performance.Our goal is to bring the technologies of the future to the online luxury ecommerce market.
+
+## Gold, Diamonds and Gemstones
+Choose from a beautiful collection of precious metals, sparkling diamonds, and vibrant gemstones. With just a click, give your jewellery the perfect look and feel—exactly how you imagined it
+[Learn more](https://www.youtube.com/watch?v=2OMt73nfqg8)
+
+## Studio lighting and Scene presets
+Give your products a unique touch with our rich library of HDR studio lighting, designed to mirror real-world conditions. Choose from curated scene presets to set the perfect mood and bring every detail to life
+[Learn more](https://www.youtube.com/watch?v=WqCdMken924)
+Create using a delightful 3D editor
+Give unique appearance to your jewellery with a rich library and presets of materials, studio lighting, backgrounds and much more.
+[Get Started](https://ijewel3d.com/drive/signup)
+[Documentation](https://developer.ijewel3d.com/)
