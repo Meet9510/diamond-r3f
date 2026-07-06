@@ -186,9 +186,9 @@ export function LandingPage({ isDragging }) {
 
             {/* Glassmorphic Navigation Header with brand logos */}
             <header className="landing-header">
-                <a href="#" className="brand-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src="/logo_diamond.png" alt="AurumStudio 3D Icon" style={{ height: '32px', objectFit: 'contain' }} />
-                    <img src="/logo_text.png" alt="AurumStudio 3D Text" style={{ height: '18px', objectFit: 'contain' }} />
+                <a href="#" className="brand-logo">
+                    <span className="logo-text">AURUM</span>
+                    <span className="logo-tag">STUDIO 3D</span>
                 </a>
                 <nav className="nav-links">
                     <a href="#hero" className="nav-link">Home</a>
@@ -363,9 +363,9 @@ export function LandingPage({ isDragging }) {
             {/* Footer with branding logos */}
             <footer className="landing-footer">
                 <div className="footer-content">
-                    <div className="footer-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <img src="/logo_diamond.png" alt="AurumStudio 3D Icon" style={{ height: '28px', objectFit: 'contain' }} />
-                        <img src="/logo_text.png" alt="AurumStudio 3D Logo" style={{ height: '16px', objectFit: 'contain' }} />
+                    <div className="footer-logo">
+                        <span className="footer-logo-brand">AURUM</span>
+                        <span className="footer-logo-studio">STUDIO 3D</span>
                     </div>
                     <div className="footer-credentials">
                         Developed & Powered by Kakadiya Graphics & Technologies
@@ -398,10 +398,9 @@ export function LoadingScreen({ onComplete }) {
     return (
         <div className="loading-wrap">
             <div className="loading-center">
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-                    <img src="/logo_diamond.png" alt="AurumStudio 3D Icon" style={{ height: '54px', objectFit: 'contain' }} />
-                    <img src="/logo_text.png" alt="AurumStudio 3D Text" style={{ height: '24px', objectFit: 'contain' }} />
-                </div>
+                <h1 className="loading-title" style={{ marginBottom: '24px' }}>
+                    AURUM<span>STUDIO 3D</span>
+                </h1>
                 <div className="loading-spinner"></div>
                 <div className="loading-text" style={{ letterSpacing: '0.1em' }}>Calibrating Optics</div>
                 <div className="loading-progress">{Math.round(progress)}%</div>
