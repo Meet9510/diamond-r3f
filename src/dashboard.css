@@ -6,12 +6,13 @@
 .app-layout {
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+    width: 111.111vw;
+    height: 111.111vh;
     background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
     overflow: hidden;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    zoom: 0.9;
+    transform: scale(0.9);
+    transform-origin: top left;
 }
 
 .app-grid {
