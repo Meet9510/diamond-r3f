@@ -1581,15 +1581,18 @@
     }
 
     .landing-hero {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 40px;
         padding: 40px 20px 60px;
         text-align: center;
-        align-items: start;
+        align-items: center;
+        min-height: auto;
     }
 
     .hero-image-showcase {
-        aspect-ratio: 1/1;
+        aspect-ratio: auto;
+        min-height: 400px;
         width: 100%;
         margin-bottom: 20px;
     }
@@ -1680,6 +1683,7 @@
         flex-direction: column;
         gap: 24px;
         padding: 36px 20px;
+        margin-top: 30px;
     }
 
     .stat-item {
