@@ -805,23 +805,28 @@ export default function App() {
             showToast('Canvas not found — please wait for the scene to load')
             return
         }
-        // Must wait one rAF so the WebGL renderer has drawn the current frame
-        // before we read back pixels via toDataURL.
+        // toBlob + createObjectURL is the correct cross-browser approach.
+        // Using toDataURL directly as href causes browsers to generate a
+        // UUID filename with no extension instead of the intended .png name.
         requestAnimationFrame(() => {
             try {
-                const dataURL = canvas.toDataURL('image/png')
-                if (dataURL === 'data:,') {
-                    showToast('Export failed — try disabling hardware acceleration in browser settings')
-                    return
-                }
-                const link = document.createElement('a')
-                const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
-                link.download = `aurum_studio_render_${ts}.png`
-                link.href = dataURL
-                document.body.appendChild(link)
-                link.click()
-                document.body.removeChild(link)
-                showToast('Render exported — check your downloads')
+                canvas.toBlob((blob) => {
+                    if (!blob) {
+                        showToast('Export failed — scene may still be loading')
+                        return
+                    }
+                    const url = URL.createObjectURL(blob)
+                    const link = document.createElement('a')
+                    const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+                    link.download = `aurum_studio_render_${ts}.png`
+                    link.href = url
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                    // Revoke the object URL after a short delay to free memory
+                    setTimeout(() => URL.revokeObjectURL(url), 1500)
+                    showToast('Render saved — check your Downloads folder')
+                }, 'image/png')
             } catch (err) {
                 showToast('Export failed: ' + err.message)
             }
