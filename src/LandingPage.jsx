@@ -26,24 +26,33 @@ function RotatingGem() {
     const ref = useRef()
     useFrame((state, delta) => {
         if (ref.current) {
-            ref.current.rotation.y += delta * 0.3
-            ref.current.rotation.x += delta * 0.15
+            ref.current.rotation.y += delta * 0.4
+            ref.current.rotation.x += delta * 0.2
         }
     })
     return (
-        <mesh ref={ref} scale={2.4}>
-            <icosahedronGeometry args={[1, 1]} />
-            <meshPhysicalMaterial
-                color="#ffffff"
-                roughness={0.02}
-                metalness={0.0}
-                transmission={1.0}
-                ior={2.42}
-                thickness={2.0}
-                clearcoat={1.0}
-                clearcoatRoughness={0.0}
-            />
-        </mesh>
+        <group ref={ref} scale={2.2}>
+            {/* Semi-translucent dark core */}
+            <mesh>
+                <icosahedronGeometry args={[1, 1]} />
+                <meshStandardMaterial
+                    color="#0f172a"
+                    metalness={0.8}
+                    roughness={0.2}
+                    flatShading={true}
+                />
+            </mesh>
+            {/* Sparkling gold wireframe overlay */}
+            <mesh>
+                <icosahedronGeometry args={[1.005, 1]} />
+                <meshBasicMaterial
+                    color="#d4af37"
+                    wireframe={true}
+                    transparent={true}
+                    opacity={0.65}
+                />
+            </mesh>
+        </group>
     )
 }
 
@@ -194,6 +203,7 @@ export function LandingPage({ isDragging }) {
                     <a href="#hero" className="nav-link">Home</a>
                     <a href="#showroom" className="nav-link">Showroom</a>
                     <a href="#technology" className="nav-link">Technology</a>
+                    <a href="#about" className="nav-link">About</a>
                     <a href="#drag-drop" className="nav-link">Upload Model</a>
                 </nav>
                 <button className="header-cta-btn" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
@@ -329,7 +339,6 @@ export function LandingPage({ isDragging }) {
                         </p>
                     </div>
                     <div className="tech-card">
-                        <div className="tech-icon" style={{ display: 'none' }}></div>
                         <div className="tech-title" style={{ fontSize: '15px', color: '#c49a45', letterSpacing: '0.05em', marginBottom: '8px' }}>LIGHT DISPERSION</div>
                         <h3 className="tech-title">Chromatic Dispersion</h3>
                         <p className="tech-desc">
@@ -341,6 +350,28 @@ export function LandingPage({ isDragging }) {
                         <h3 className="tech-title">Specular Highlights</h3>
                         <p className="tech-desc">
                             A dual-pass shader model isolates direct top-surface reflections from internal volume bounces. This preserves sharp mirror reflections on flat tables while maintaining deep refraction in the pavilion.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* About Us Section */}
+            <section id="about" className="landing-about-sec">
+                <div className="section-header">
+                    <span className="section-subtitle">Our Vision</span>
+                    <h2 className="section-title">About AurumStudio 3D</h2>
+                </div>
+                <div className="about-grid">
+                    <div className="about-card">
+                        <h3 className="about-card-title">Leadership & Design</h3>
+                        <p className="about-card-text">
+                            AurumStudio 3D is a premium real-time jewelry customization and rendering platform founded and directed by <strong>Meet R Kakadiya</strong>. We merge mathematical precision, structural engineering, and GPU-accelerated graphics to deliver high-fidelity interactive visualization for modern jewelry houses.
+                        </p>
+                    </div>
+                    <div className="about-card">
+                        <h3 className="about-card-title">Kakadiya Graphics</h3>
+                        <p className="about-card-text">
+                            Powered by Kakadiya Graphics & Technologies, our studio pushes the boundaries of WebGL performance. Through proprietary dual-pass shaders and customized Bounding Volume Hierarchies, we bring physical accuracy directly into standard browser tabs.
                         </p>
                     </div>
                 </div>

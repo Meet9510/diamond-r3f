@@ -833,7 +833,7 @@ export default function App() {
     }, [applyScenePreset, applyGemPreset, applyEnvPreset])
 
     return (
-        <div className="app-layout">
+        <>
             {/* Leva UI config (Hidden manually for presentation) */}
             <Leva hidden={true} />
 
@@ -853,7 +853,7 @@ export default function App() {
             )}
 
             {appState === 'viewer' && (
-                <>
+                <div className="app-layout">
                     {showLoader && (
                         <LoadingScreen onComplete={() => setShowLoader(false)} />
                     )}
@@ -1012,9 +1012,9 @@ export default function App() {
                             />
                         </div>
                     </div>
-                </>
+                </div>
             )}
-        </div>
+        </>
     )
 }
 
