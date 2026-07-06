@@ -118,6 +118,7 @@ function useScrollReveal() {
 
 export function LandingPage({ isDragging }) {
     const [activeIdx, setActiveIdx] = useState(0)
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     useScrollReveal()
 
     // Auto rotate showcase images every 5 seconds unless interacted with
@@ -174,13 +175,28 @@ export function LandingPage({ isDragging }) {
                     <span className="logo-text">AURUM</span>
                     <span className="logo-tag">STUDIO 3D</span>
                 </a>
-                <nav className="nav-links">
-                    <a href="#hero" className="nav-link">Home</a>
-                    <a href="#showroom" className="nav-link">Showroom</a>
-                    <a href="#technology" className="nav-link">Technology</a>
-                    <a href="#about" className="nav-link">About</a>
-                    <a href="#drag-drop" className="nav-link">Upload Model</a>
+                
+                <button 
+                    className={`hamburger-btn ${mobileMenuOpen ? 'hamburger-btn--open' : ''}`} 
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label="Toggle navigation menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <nav className={`nav-links ${mobileMenuOpen ? 'nav-links--open' : ''}`}>
+                    <a href="#hero" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</a>
+                    <a href="#showroom" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Showroom</a>
+                    <a href="#technology" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Technology</a>
+                    <a href="#about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About</a>
+                    <a href="#drag-drop" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Upload Model</a>
+                    <button className="mobile-cta-btn" onClick={() => { setMobileMenuOpen(false); openConfigurator(CUSTOM_DESIGNS[0].config); }}>
+                        Launch Configurator
+                    </button>
                 </nav>
+                
                 <button className="header-cta-btn" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
                     Launch Configurator
                 </button>
