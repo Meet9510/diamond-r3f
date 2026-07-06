@@ -1583,8 +1583,15 @@
     .landing-hero {
         grid-template-columns: 1fr;
         gap: 40px;
-        padding: 40px 20px;
+        padding: 40px 20px 60px;
         text-align: center;
+        align-items: start;
+    }
+
+    .hero-image-showcase {
+        aspect-ratio: 1/1;
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     .hero-eyebrow {
