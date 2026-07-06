@@ -612,7 +612,10 @@ function SceneEnvironment({ preset }) {
  * ─────────────────────────────────────────────────────────────────────────────
  */
 export default function App() {
-    const [appState, setAppState] = useState('landing') // 'landing', 'viewer'
+    const [appState, setAppState] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('mode') === 'editor' ? 'viewer' : 'landing';
+    }) // 'landing', 'viewer'
     const [showLoader, setShowLoader] = useState(false)
     const [meshConfig, setMeshConfig] = useState({}) // { uuid: { color, gemstone, metal } }
     const [customModelUrl, setCustomModelUrl] = useState(null)
@@ -658,8 +661,8 @@ export default function App() {
 
     const [sceneState, setSceneState] = useState({
         model: 'ring.glb',
-        hdrMap: '/hdri/photo_studio_01_1k.hdr',
-        sceneEnvIntensity: 1.0,
+        hdrMap: 'custom-strip',
+        sceneEnvIntensity: 1.2,
         lightingMode: 'MEDIUM',
         autoRotate: false,
     })
@@ -794,6 +797,40 @@ export default function App() {
             showToast('📸 Render exported successfully')
         }
     }, [showToast])
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        if (params.get('mode') === 'editor') {
+            const urlMetalColor = params.get('metalColor')
+            if (urlMetalColor) setMetalColor(urlMetalColor)
+
+            const urlGemColor = params.get('gemColor')
+            if (urlGemColor) setGlobalGemColor(urlGemColor)
+
+            const urlScenePresetId = params.get('scenePresetId')
+            if (urlScenePresetId) {
+                const found = SCENE_PRESETS.find(p => p.id === urlScenePresetId)
+                if (found) applyScenePreset(found)
+            }
+
+            const urlGemPresetId = params.get('gemPresetId')
+            if (urlGemPresetId) {
+                const found = GEM_PRESETS.find(p => p.id === urlGemPresetId)
+                if (found) applyGemPreset(found)
+            }
+
+            const urlEnvPresetId = params.get('envPresetId')
+            if (urlEnvPresetId) {
+                const found = ENV_PRESETS.find(p => p.id === urlEnvPresetId)
+                if (found) applyEnvPreset(found)
+            }
+
+            const urlModel = params.get('model')
+            if (urlModel) {
+                setSceneState(prev => ({ ...prev, model: urlModel }))
+            }
+        }
+    }, [applyScenePreset, applyGemPreset, applyEnvPreset])
 
     return (
         <div className="app-layout">

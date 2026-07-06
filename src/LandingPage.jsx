@@ -91,7 +91,7 @@ const CUSTOM_DESIGNS = [
 // COMPONENT: LandingPage
 // Renders the rich luxury landing page with multiple interactive sections.
 // ─────────────────────────────────────────────────────────────────────────────
-export function LandingPage({ onStart, isDragging }) {
+export function LandingPage({ isDragging }) {
     const [activeIdx, setActiveIdx] = useState(0);
 
     // Auto rotate showcase images every 5 seconds unless interacted with
@@ -103,6 +103,20 @@ export function LandingPage({ onStart, isDragging }) {
     }, []);
 
     const activeDesign = CUSTOM_DESIGNS[activeIdx];
+
+    // Helper: opens the configurator in a new tab with specified parameters
+    const openConfigurator = (config) => {
+        let url = '?mode=editor';
+        if (config) {
+            if (config.model) url += `&model=${encodeURIComponent(config.model)}`;
+            if (config.metalColor) url += `&metalColor=${encodeURIComponent(config.metalColor)}`;
+            if (config.gemColor) url += `&gemColor=${encodeURIComponent(config.gemColor)}`;
+            if (config.scenePreset) url += `&scenePresetId=${encodeURIComponent(config.scenePreset.id)}`;
+            if (config.gemPreset) url += `&gemPresetId=${encodeURIComponent(config.gemPreset.id)}`;
+            if (config.envPreset) url += `&envPresetId=${encodeURIComponent(config.envPreset.id)}`;
+        }
+        window.open(url, '_blank');
+    };
 
     return (
         <div className={`landing-wrap ${isDragging ? 'landing-wrap--dragging' : ''}`}>
@@ -125,7 +139,7 @@ export function LandingPage({ onStart, isDragging }) {
                     <a href="#technology" className="nav-link">Technology</a>
                     <a href="#drag-drop" className="nav-link">Upload Model</a>
                 </nav>
-                <button className="header-cta-btn" onClick={() => onStart(CUSTOM_DESIGNS[0].config)}>
+                <button className="header-cta-btn" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
                     Launch Configurator
                 </button>
             </header>
@@ -145,7 +159,7 @@ export function LandingPage({ onStart, isDragging }) {
                         Welcome to Aurum Studio. Experience the future of fine jewelry design through our physically accurate, real-time 3D customizer. Configure premium metals and gemstones cut with mathematical precision, rendering at 60fps directly in your browser.
                     </p>
                     <div className="hero-actions">
-                        <button className="hero-btn-primary" onClick={() => onStart(activeDesign.config)}>
+                        <button className="hero-btn-primary" onClick={() => openConfigurator(activeDesign.config)}>
                             Configure This Ring
                         </button>
                         <a href="#showroom" className="hero-btn-secondary">
@@ -219,7 +233,7 @@ export function LandingPage({ onStart, isDragging }) {
                                 <p className="card-text">{design.desc}</p>
                                 <div className="card-actions">
                                     <span className="card-price">{design.price}</span>
-                                    <button className="card-btn" onClick={() => onStart(design.config)}>
+                                    <button className="card-btn" onClick={() => openConfigurator(design.config)}>
                                         Customize in 3D
                                     </button>
                                 </div>
@@ -269,7 +283,7 @@ export function LandingPage({ onStart, isDragging }) {
 
             {/* Interactive File Drag/Drop Zone */}
             <section id="drag-drop" className="landing-upload-sec">
-                <div className="upload-zone-wrap" onClick={() => onStart(CUSTOM_DESIGNS[0].config)}>
+                <div className="upload-zone-wrap" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
                     <div className="upload-icon">💍</div>
                     <h3 className="upload-headline">Have Your Own Design?</h3>
                     <p className="upload-subtext">
