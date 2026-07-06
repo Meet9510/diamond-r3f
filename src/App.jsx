@@ -801,13 +801,31 @@ export default function App() {
 
     const captureScreenshot = useCallback(() => {
         const canvas = document.querySelector('canvas')
-        if (canvas) {
-            const link = document.createElement('a')
-            link.download = 'aurum_studio_render.png'
-            link.href = canvas.toDataURL('image/png')
-            link.click()
-            showToast('Render exported successfully')
+        if (!canvas) {
+            showToast('Canvas not found — please wait for the scene to load')
+            return
         }
+        // Must wait one rAF so the WebGL renderer has drawn the current frame
+        // before we read back pixels via toDataURL.
+        requestAnimationFrame(() => {
+            try {
+                const dataURL = canvas.toDataURL('image/png')
+                if (dataURL === 'data:,') {
+                    showToast('Export failed — try disabling hardware acceleration in browser settings')
+                    return
+                }
+                const link = document.createElement('a')
+                const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19)
+                link.download = `aurum_studio_render_${ts}.png`
+                link.href = dataURL
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+                showToast('Render exported — check your downloads')
+            } catch (err) {
+                showToast('Export failed: ' + err.message)
+            }
+        })
     }, [showToast])
 
     useEffect(() => {
