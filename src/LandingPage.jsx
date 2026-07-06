@@ -12,49 +12,11 @@
  * explanations to introduce the technology stack.
  * ============================================================================
  */
-import React, { useState, useEffect, useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import React, { useState, useEffect } from 'react'
 import { useProgress } from '@react-three/drei'
 import { GEM_PRESETS, METAL_PRESETS, SCENE_PRESETS, ENV_PRESETS } from './presets.js'
 import './landing.css'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// COMPONENT: RotatingGem
-// A lightweight 3D element rendering a rotating glassmorphic gem
-// ─────────────────────────────────────────────────────────────────────────────
-function RotatingGem() {
-    const ref = useRef()
-    useFrame((state, delta) => {
-        if (ref.current) {
-            ref.current.rotation.y += delta * 0.4
-            ref.current.rotation.x += delta * 0.2
-        }
-    })
-    return (
-        <group ref={ref} scale={2.2}>
-            {/* Semi-translucent dark core */}
-            <mesh>
-                <icosahedronGeometry args={[1, 1]} />
-                <meshStandardMaterial
-                    color="#0f172a"
-                    metalness={0.8}
-                    roughness={0.2}
-                    flatShading={true}
-                />
-            </mesh>
-            {/* Sparkling gold wireframe overlay */}
-            <mesh>
-                <icosahedronGeometry args={[1.005, 1]} />
-                <meshBasicMaterial
-                    color="#d4af37"
-                    wireframe={true}
-                    transparent={true}
-                    opacity={0.65}
-                />
-            </mesh>
-        </group>
-    )
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DATA: Custom Designs for Showroom (No Emojis, No Prices)
@@ -243,20 +205,9 @@ export function LandingPage({ isDragging }) {
                     </div>
                 </div>
 
-                {/* Hero Showcase: 3D rotating canvas element on top, static image switcher on hover */}
+                {/* Hero Showcase: static image switcher */}
                 <div className="hero-image-showcase">
-                    {/* 3D Canvas element */}
-                    <div className="hero-3d-card">
-                        <Canvas camera={{ position: [0, 0, 5], fov: 40 }} style={{ width: '100%', height: '100%' }}>
-                            <ambientLight intensity={1.5} />
-                            <pointLight position={[10, 10, 10]} intensity={3} />
-                            <pointLight position={[-10, -10, -10]} intensity={1} />
-                            <RotatingGem />
-                        </Canvas>
-                        <div className="hero-3d-label">
-                            <span>Interactive 3D Preview</span>
-                        </div>
-                    </div>
+                    <img src={activeDesign.image} alt={activeDesign.title} className="showcase-bg-image" />
 
                     {/* Floating thumbnails */}
                     <div className="showcase-thumbnails">
