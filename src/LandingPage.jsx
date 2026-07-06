@@ -296,6 +296,103 @@ export function LandingPage({ isDragging }) {
                 </div>
             </section>
 
+            {/* ── Brand Marquee Ticker ── */}
+            <div className="marquee-strip" aria-hidden="true">
+                <div className="marquee-track">
+                    {['Real-Time Raytracing', 'Diamond Illusion Engine', '60fps WebGL', 'Marquise Crown', 'Platinum & Gold', 'Gemstone Fire', 'BVH Acceleration', 'Chromatic Dispersion', 'AurumStudio 3D', 'Luxury Configured',
+                      'Real-Time Raytracing', 'Diamond Illusion Engine', '60fps WebGL', 'Marquise Crown', 'Platinum & Gold', 'Gemstone Fire', 'BVH Acceleration', 'Chromatic Dispersion', 'AurumStudio 3D', 'Luxury Configured'].map((text, i) => (
+                        <span key={i} className="marquee-item">
+                            <span className="marquee-dot">◆</span>
+                            {text}
+                        </span>
+                    ))}
+                </div>
+            </div>
+
+            {/* ── The Experience — Feature Highlights ── */}
+            <section className="landing-features-sec">
+                <div className="section-header reveal reveal-up">
+                    <span className="section-subtitle">Why AurumStudio</span>
+                    <h2 className="section-title">Crafted for the Discerning Eye</h2>
+                    <div className="section-divider"><span></span><span className="divider-diamond"></span><span></span></div>
+                </div>
+                <div className="features-grid">
+                    {[
+                        {
+                            icon: (
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <circle cx="24" cy="24" r="20"/>
+                                    <path d="M24 8 L28 18 L38 18 L30 26 L33 36 L24 30 L15 36 L18 26 L10 18 L20 18 Z"/>
+                                </svg>
+                            ),
+                            title: 'Physical Accuracy',
+                            desc: 'Every photon is traced with Snell\'s Law precision. Our engine simulates actual gemstone physics — chromatic dispersion, total internal reflection, and Fresnel effects — at interactive frame rates.'
+                        },
+                        {
+                            icon: (
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <rect x="8" y="8" width="32" height="32" rx="6"/>
+                                    <path d="M16 24 L20 28 L32 16"/>
+                                    <circle cx="24" cy="24" r="10"/>
+                                </svg>
+                            ),
+                            title: 'Zero-Install Platform',
+                            desc: 'No plugins, no downloads. AurumStudio 3D runs entirely inside your browser via WebGL. The complete diamond illusion engine is streamed and executed natively on your GPU.'
+                        },
+                        {
+                            icon: (
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M24 4 L44 16 L44 32 L24 44 L4 32 L4 16 Z"/>
+                                    <path d="M24 4 L24 44 M4 16 L44 16 M4 32 L44 32"/>
+                                </svg>
+                            ),
+                            title: 'Custom Model Import',
+                            desc: 'Drag and drop any .GLB or .GLTF file to instantly apply our diamond rendering engine to your proprietary jewelry designs. Full PBR material overrides included.'
+                        },
+                        {
+                            icon: (
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M6 24 C6 13.5 13.5 6 24 6 C34.5 6 42 13.5 42 24"/>
+                                    <path d="M6 24 C6 34.5 13.5 42 24 42 C34.5 42 42 34.5 42 24"/>
+                                    <path d="M14 14 L34 34 M34 14 L14 34"/>
+                                    <circle cx="24" cy="24" r="4"/>
+                                </svg>
+                            ),
+                            title: 'Live Configurator',
+                            desc: 'Switch gemstone species, metal alloys, environment lighting, and post-processing settings in real time. Every change re-renders the scene within a single animation frame.'
+                        },
+                        {
+                            icon: (
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M8 40 L8 20 L24 8 L40 20 L40 40"/>
+                                    <rect x="18" y="28" width="12" height="12"/>
+                                    <path d="M16 20 L24 14 L32 20"/>
+                                </svg>
+                            ),
+                            title: 'Studio Environments',
+                            desc: 'Select from six hand-crafted HDRI studio environments — from minimal contrast strips to warm luxury boxes — each tuned to maximize the optical brilliance of your gemstone.'
+                        },
+                        {
+                            icon: (
+                                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <circle cx="24" cy="24" r="18"/>
+                                    <path d="M24 12 L24 24 L32 32"/>
+                                    <circle cx="24" cy="24" r="3" fill="currentColor"/>
+                                </svg>
+                            ),
+                            title: 'Export-Ready Output',
+                            desc: 'Capture high-resolution PNG snapshots of your configured jewelry directly from the viewport. Pixel-perfect rendering at 2K, ready for catalogs, social media, and client presentations.'
+                        },
+                    ].map((feat, i) => (
+                        <div key={i} className={`feature-card reveal reveal-up reveal-delay-${i % 3}`}>
+                            <div className="feature-icon">{feat.icon}</div>
+                            <h3 className="feature-title">{feat.title}</h3>
+                            <p className="feature-desc">{feat.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
             {/* Technology Info Section */}
             <section id="technology" className="landing-tech-sec">
                 <div className="section-header reveal reveal-up">
@@ -342,6 +439,28 @@ export function LandingPage({ isDragging }) {
                 </div>
             </section>
 
+            {/* ── Full-Width CTA Banner ── */}
+            <section className="landing-cta-sec reveal reveal-up">
+                <div className="cta-glow"></div>
+                <div className="cta-inner">
+                    <span className="cta-eyebrow">Begin Your Session</span>
+                    <h2 className="cta-headline">
+                        Configure Your<br />
+                        <span>Perfect Jewel</span>
+                    </h2>
+                    <p className="cta-subtext">
+                        Step inside the configurator. Choose your metal, select your gemstone,<br />
+                        fine-tune every optical parameter — and see the result rendered in real time.
+                    </p>
+                    <button className="cta-main-btn" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
+                        <span>Open AurumStudio 3D</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
             {/* Interactive File Drag/Drop Zone */}
             <section id="drag-drop" className="landing-upload-sec reveal reveal-up">
                 <div className="upload-zone-wrap" onClick={() => openConfigurator(CUSTOM_DESIGNS[0].config)}>
@@ -355,6 +474,7 @@ export function LandingPage({ isDragging }) {
                     </div>
                 </div>
             </section>
+
 
             {/* Footer */}
             <footer className="landing-footer">
