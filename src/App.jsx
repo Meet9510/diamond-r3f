@@ -58,6 +58,22 @@ function ExposureController({ exposure }) {
     return null
 }
 
+function CameraResponsiveAdapter() {
+    const { camera, size } = useThree()
+    useEffect(() => {
+        const isMobile = size.width < 768 || size.width < size.height
+        if (isMobile) {
+            camera.position.set(0, 2.6, 6.8)
+            camera.fov = 45
+        } else {
+            camera.position.set(0, 2.5, 5)
+            camera.fov = 40
+        }
+        camera.updateProjectionMatrix()
+    }, [camera, size.width, size.height])
+    return null
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // getStudioStripTexture
 //
@@ -898,6 +914,7 @@ export default function App() {
                         setAutoRotate={(val) => setSceneState(prev => ({ ...prev, autoRotate: val }))}
                         onReset={() => window.location.reload()}
                         onExport={captureScreenshot}
+                        onToggleFullScreen={toggleFullScreen}
                     />
 
                     <div className="app-grid">
@@ -956,6 +973,7 @@ export default function App() {
                             >
                                 <Selection>
                                     <ExposureController exposure={advanced.exposure} />
+                                    <CameraResponsiveAdapter />
 
                                     <ambientLight intensity={lighting.ambientIntensity} />
                                     <directionalLight

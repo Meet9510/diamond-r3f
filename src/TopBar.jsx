@@ -13,7 +13,7 @@
 import React from 'react'
 import './topbar.css'
 
-export function TopBar({ title, autoRotate, setAutoRotate, onReset, onExport }) {
+export function TopBar({ title, autoRotate, setAutoRotate, onReset, onExport, onToggleFullScreen }) {
     return (
         <div className="top-bar">
             {/* Left: Branding & Title */}
@@ -59,6 +59,12 @@ export function TopBar({ title, autoRotate, setAutoRotate, onReset, onExport }) 
                         <path d="M3 3v5h5" />
                     </svg>
                     <span className="nav-btn__label">Reset</span>
+                </button>
+                <button className="nav-btn nav-btn--secondary" onClick={onToggleFullScreen} title="Toggle Fullscreen">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2-2h3" />
+                    </svg>
+                    <span className="nav-btn__label">Fullscreen</span>
                 </button>
                 <button className="nav-btn nav-btn--primary" onClick={onExport} title="Render Image / Snapshot">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
