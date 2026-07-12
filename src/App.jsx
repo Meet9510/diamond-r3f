@@ -13,7 +13,7 @@
  *   – Bloom / R3F pipeline  → unchanged
  */
 
-import { useRef, Suspense, useState, useMemo, useEffect, useCallback } from 'react'
+import { useRef, Suspense, useState, useMemo, useEffect, useCallback, Component } from 'react'
 import { Canvas, useLoader, useThree, useFrame } from '@react-three/fiber'
 import {
     useGLTF,
@@ -37,6 +37,29 @@ import { TopBar } from './TopBar.jsx'
 import { GEM_PRESETS, METAL_PRESETS, ENV_PRESETS, SCENE_PRESETS, METAL_COLORS, GEM_COLORS } from './presets.js'
 import { LandingPage, LoadingScreen } from './LandingPage.jsx'
 import './dashboard.css'
+
+// Configure Draco decoder globally for compressed GLB/GLTF models
+useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')
+
+// Error Boundary to catch GLTF loading failures and prevent Canvas from crashing
+class CanvasErrorBoundary extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { hasError: false, error: null }
+    }
+    static getDerivedStateFromError(error) {
+        return { hasError: true, error }
+    }
+    componentDidCatch(error, errorInfo) {
+        console.error("CanvasErrorBoundary caught error:", error, errorInfo)
+    }
+    render() {
+        if (this.state.hasError) {
+            return this.props.fallback || null
+        }
+        return this.props.children
+    }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Colour palettes
@@ -669,7 +692,8 @@ export default function App() {
                 if (name.endsWith('.glb') || name.endsWith('.gltf')) {
                     const url = URL.createObjectURL(file)
                     setCustomModelUrl(url)
-                    setAppState('loading')
+                    setAppState('viewer')
+                    setShowLoader(true)
                 } else {
                     alert('Please drop a valid .glb or .gltf 3D model.')
                 }
@@ -949,108 +973,156 @@ export default function App() {
                                 </div>
                             )}
 
-                            <Canvas
-                                shadows
-                                dpr={[1, 1.5]}
-                                gl={{
-                                    antialias: false,
-                                    physicallyCorrectLights: true,
-                                    preserveDrawingBuffer: true,
-                                    toneMapping: THREE.ACESFilmicToneMapping,
-                                    toneMappingExposure: 1.6,
-                                    outputColorSpace: THREE.SRGBColorSpace,
-                                    alpha: true,
-                                }}
-                                camera={{ position: [0, 2.5, 5], fov: 40 }}
-                                onPointerMissed={() => setSelectedElement('environment')}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    borderRadius: '18px',
-                                    outline: 'none',
-                                    background: 'transparent'
-                                }}
+                            <CanvasErrorBoundary
+                                key={customModelUrl || sceneState.model}
+                                fallback={
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        height: '100%',
+                                        color: '#ff4d4d',
+                                        background: 'rgba(255, 77, 77, 0.05)',
+                                        border: '1px dashed #ff4d4d',
+                                        borderRadius: '18px',
+                                        padding: '24px',
+                                        textAlign: 'center'
+                                    }}>
+                                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginBottom: '16px' }}>
+                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                            <line x1="12" y1="9" x2="12" y2="13"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                        <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 600 }}>Failed to Load 3D Model</h4>
+                                        <p style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#a0aec0', maxWidth: '300px' }}>
+                                            The model could not be loaded. This is usually due to CORS policy block, invalid GLTF format, or absolute file path restrictions.
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                setCustomModelUrl(null);
+                                                setSceneState(prev => ({ ...prev, model: 'ring.glb' }));
+                                            }}
+                                            style={{
+                                                padding: '10px 20px',
+                                                background: '#ff4d4d',
+                                                color: '#ffffff',
+                                                border: 'none',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                                boxShadow: '0 4px 12px rgba(255, 77, 77, 0.3)',
+                                                transition: 'all 0.2s ease'
+                                            }}
+                                        >
+                                            Reset to Default Model
+                                        </button>
+                                    </div>
+                                }
                             >
-                                <Selection>
-                                    <ExposureController exposure={advanced.exposure} />
-                                    <CameraResponsiveAdapter />
+                                <Canvas
+                                    shadows
+                                    dpr={[1, 1.5]}
+                                    gl={{
+                                        antialias: false,
+                                        physicallyCorrectLights: true,
+                                        preserveDrawingBuffer: true,
+                                        toneMapping: THREE.ACESFilmicToneMapping,
+                                        toneMappingExposure: 1.6,
+                                        outputColorSpace: THREE.SRGBColorSpace,
+                                        alpha: true,
+                                    }}
+                                    camera={{ position: [0, 2.5, 5], fov: 40 }}
+                                    onPointerMissed={() => setSelectedElement('environment')}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        borderRadius: '18px',
+                                        outline: 'none',
+                                        background: 'transparent'
+                                    }}
+                                >
+                                    <Selection>
+                                        <ExposureController exposure={advanced.exposure} />
+                                        <CameraResponsiveAdapter />
 
-                                    <ambientLight intensity={lighting.ambientIntensity} />
-                                    <directionalLight
-                                        position={[lighting.lightPosX, lighting.lightPosY, lighting.lightPosZ]}
-                                        intensity={lighting.lightIntensity}
-                                        castShadow
-                                        shadow-mapSize={[2048, 2048]}
-                                        shadow-camera-far={20}
-                                        shadow-camera-near={0.1}
-                                        shadow-radius={20}
-                                        shadow-bias={-0.001}
-                                    />
-                                    <directionalLight position={[-4, 5, 2]} intensity={0.2} />
-
-                                    <SceneEnvironment preset={dashScenePreset} />
-
-                                    {sceneState.hdrMap === 'custom-strip' ? (
-                                        <CustomStudioStrip />
-                                    ) : (
-                                        <Environment
-                                            files={sceneState.hdrMap}
-                                            background={false}
-                                            intensity={sceneState.sceneEnvIntensity}
+                                        <ambientLight intensity={lighting.ambientIntensity} />
+                                        <directionalLight
+                                            position={[lighting.lightPosX, lighting.lightPosY, lighting.lightPosZ]}
+                                            intensity={lighting.lightIntensity}
+                                            castShadow
+                                            shadow-mapSize={[2048, 2048]}
+                                            shadow-camera-far={20}
+                                            shadow-camera-near={0.1}
+                                            shadow-radius={20}
+                                            shadow-bias={-0.001}
                                         />
-                                    )}
+                                        <directionalLight position={[-4, 5, 2]} intensity={0.2} />
 
-                                    <EffectComposer multisampling={8} autoClear={false}>
-                                        <Outline
-                                            blur
-                                            edgeColor="#ff7a00"
-                                            visibleEdgeColor="#ff7a00"
-                                            hiddenEdgeColor="#ff7a00"
-                                            edgeStrength={5}
-                                            width={1000}
-                                            pulseSpeed={0.0} // Solid outline for premium look
+                                        <SceneEnvironment preset={dashScenePreset} />
+
+                                        {sceneState.hdrMap === 'custom-strip' ? (
+                                            <CustomStudioStrip />
+                                        ) : (
+                                            <Environment
+                                                files={sceneState.hdrMap}
+                                                background={false}
+                                                intensity={sceneState.sceneEnvIntensity}
+                                            />
+                                        )}
+
+                                        <EffectComposer multisampling={8} autoClear={false}>
+                                            <Outline
+                                                blur
+                                                edgeColor="#ff7a00"
+                                                visibleEdgeColor="#ff7a00"
+                                                hiddenEdgeColor="#ff7a00"
+                                                edgeStrength={5}
+                                                width={1000}
+                                                pulseSpeed={0.0} // Solid outline for premium look
+                                            />
+                                            <Bloom
+                                                luminanceThreshold={pp.bloomThreshold}
+                                                intensity={pp.bloomIntensity}
+                                                radius={pp.bloomRadius}
+                                                mipmapBlur
+                                            />
+                                            <Vignette eskil={false} offset={0.15} darkness={0.4} />
+                                            <Noise opacity={0.01} />
+                                        </EffectComposer>
+
+                                        <Suspense fallback={null}>
+                                            <EnvMapCatcher onEnvMap={setEnvMap} />
+
+                                            <IllusionDiamondScene
+                                                model={sceneState.model}
+                                                customModelUrl={customModelUrl}
+                                                metalColor={metalColor}
+                                                globalGemColor={globalGemColor}
+                                                selectedGem={selectedGem}
+                                                setSelectedGem={setSelectedGem}
+                                                selectedElement={selectedElement}
+                                                setSelectedElement={setSelectedElement}
+                                                meshConfig={meshConfig}
+                                                advanced={advancedFull}
+                                                envMap={envMap}
+                                            />
+                                        </Suspense>
+
+                                        <OrbitControls
+                                            makeDefault
+                                            autoRotate={sceneState.autoRotate}
+                                            autoRotateSpeed={1.0}
+                                            minPolarAngle={0}
+                                            maxPolarAngle={Math.PI / 2 - 0.1}
+                                            enablePan={false}
+                                            minDistance={3}
+                                            maxDistance={12}
+                                            target={[0, 1.28, 0]}
                                         />
-                                        <Bloom
-                                            luminanceThreshold={pp.bloomThreshold}
-                                            intensity={pp.bloomIntensity}
-                                            radius={pp.bloomRadius}
-                                            mipmapBlur
-                                        />
-                                        <Vignette eskil={false} offset={0.15} darkness={0.4} />
-                                        <Noise opacity={0.01} />
-                                    </EffectComposer>
-
-                                    <Suspense fallback={null}>
-                                        <EnvMapCatcher onEnvMap={setEnvMap} />
-
-                                        <IllusionDiamondScene
-                                            model={sceneState.model}
-                                            customModelUrl={customModelUrl}
-                                            metalColor={metalColor}
-                                            globalGemColor={globalGemColor}
-                                            selectedGem={selectedGem}
-                                            setSelectedGem={setSelectedGem}
-                                            selectedElement={selectedElement}
-                                            setSelectedElement={setSelectedElement}
-                                            meshConfig={meshConfig}
-                                            advanced={advancedFull}
-                                            envMap={envMap}
-                                        />
-                                    </Suspense>
-
-                                    <OrbitControls
-                                        makeDefault
-                                        autoRotate={sceneState.autoRotate}
-                                        autoRotateSpeed={1.0}
-                                        minPolarAngle={0}
-                                        maxPolarAngle={Math.PI / 2 - 0.1}
-                                        enablePan={false}
-                                        minDistance={3}
-                                        maxDistance={12}
-                                        target={[0, 1.28, 0]}
-                                    />
-                                </Selection>
-                            </Canvas>
+                                    </Selection>
+                                </Canvas>
+                            </CanvasErrorBoundary>
 
                             <button className="fullscreen-btn" onClick={toggleFullScreen} title="Toggle Fullscreen">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
